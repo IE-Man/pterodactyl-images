@@ -49,7 +49,7 @@ jobs:
       - name: Build and push image
         uses: docker/build-push-action@v6
         with:
-          context: ./proxy-java
+          context: ./proxy-java/${{ matrix.tag }}
           platforms: linux/amd64,linux/arm64
           file: ./proxy-java/${{ matrix.tag }}/Dockerfile
           push: true
