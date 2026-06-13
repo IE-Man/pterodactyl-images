@@ -26,7 +26,8 @@ jobs:
       fail-fast: false
       matrix:
         tag:
-          - 25
+          - 25-ctd
+          - 25-velocity
     steps:
       - name: Git checkout for Github repository workspace
         uses: actions/checkout@v4
