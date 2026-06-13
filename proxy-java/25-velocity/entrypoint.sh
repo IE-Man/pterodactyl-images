@@ -17,20 +17,18 @@ fi
 CURRENT_SHA256=$(sha256sum server.jar | awk '{print $1}')
 
 VERSION=$(
-curl -fsSL https://api.papermc.io/v2/projects/velocity 
-| jq -r '.versions[-1]'
+    curl -fsSL https://api.papermc.io/v2/projects/velocity \
+    | jq -r '.versions[-1]'
 )
 
 BUILD=$(
-curl -fsSL 
-"https://api.papermc.io/v2/projects/velocity/versions/${VERSION}" 
-| jq -r '.builds[-1]'
+    curl -fsSL "https://api.papermc.io/v2/projects/velocity/versions/${VERSION}" \
+    | jq -r '.builds[-1]'
 )
 
 EXPECTED_SHA256=$(
-curl -fsSL 
-"https://api.papermc.io/v2/projects/velocity/versions/${VERSION}/builds/${BUILD}" 
-| jq -r '.downloads.application.sha256'
+    curl -fsSL "https://api.papermc.io/v2/projects/velocity/versions/${VERSION}/builds/${BUILD}" \
+    | jq -r '.downloads.application.sha256'
 )
 
 echo "Expected: $EXPECTED_SHA256"
