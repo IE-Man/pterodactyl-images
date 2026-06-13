@@ -1,4 +1,4 @@
-name: build java_graalvm
+name: build proxy_Java
 
 on:
   workflow_dispatch:
@@ -8,25 +8,25 @@ on:
     branches:
       - main
     paths:
-      - java-graalvm/**
+      - proxy-java/**
 
 permissions:
   actions: read
   packages: write
 
 concurrency:
-  group: java-graalvm-${{ github.ref }}-1
+  group: proxy-java-${{ github.ref }}-1
   cancel-in-progress: true
 
 jobs:
   build_and_push:
-    name: "java_${{ matrix.tag }}_graalvm"
+    name: "proxy_${{ matrix.tag }}_java"
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         tag:
-          - proxy-25
+          - 25
     steps:
       - name: Git checkout for Github repository workspace
         uses: actions/checkout@v4
@@ -49,8 +49,8 @@ jobs:
       - name: Build and push image
         uses: docker/build-push-action@v6
         with:
-          context: ./java-graalvm
+          context: ./proxy-java
           platforms: linux/amd64,linux/arm64
-          file: ./java-graalvm/${{ matrix.tag }}/Dockerfile
+          file: ./proxy-java/${{ matrix.tag }}/Dockerfile
           push: true
-          tags: ghcr.io/apuru-katze/pterodactyl-images:java_${{ matrix.tag }}_graalvm
+          tags: ghcr.io/apuru-katze/pterodactyl-images:proxy_${{ matrix.tag }}_java
