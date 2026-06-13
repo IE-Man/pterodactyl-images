@@ -15,12 +15,16 @@ CURRENT_SHA256=$(sha256sum server.jar | awk '{print $1}')
 EXPECTED_SHA256=$(
 curl -fsSL \
 https://api.github.com/repos/GemstoneGG/Velocity-CTD/releases/latest |
-grep -A20 '"name": "velocity-ctd-' |
-grep '"digest"' |
+jq -r '
+.assets[]
+| select(.name | test("^velocity-ctd-.*\\.jar$"))
+| .digest
+' |
 head -n1 |
-sed -E 's/.*sha256:([a-f0-9]+).*/\1/'
+sed 's/^sha256://'
 )
-
+    
+echo "Expected: $EXPECTED_SHA256"
 if [ -z "$EXPECTED_SHA256" ]; then
     echo "[ERROR] Gagal mengambil SHA256 dari GitHub."
     exit 1
